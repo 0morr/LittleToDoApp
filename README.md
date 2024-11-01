@@ -31,7 +31,7 @@ Una aplicación simple de lista de tareas construida con Go, HTMX y Petite-vue. 
 
 1. Clona el repositorio
 ```bash
-git clone https://github.com/rekadilab/LittleToDoApp.git
+git clone https://github.com/0morr/LittleToDoApp.git
 cd my-todo-app
 ```
 
