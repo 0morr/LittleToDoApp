@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Todo List</title>
+  <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+  <script src="https://unpkg.com/petite-vue@0.3.0"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 p-8">
+  <div v-scope="{ task: { name: '' }, tasks: [] }"
+    class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden p-6">
+    <h1 class="text-2xl font-bold mb-4">Todo List</h1>
+
+    <!-- Formulario para añadir tareas -->
+    <form hx-post="/api/tasks" hx-target="#task-list" hx-swap="beforeend" @submit="task.name = ''" class="mb-6">
+      <div class="flex gap-2">
+        <input type="text" name="name" v-model="task.name" required class="flex-1 border rounded px-3 py-2"
+          placeholder="Enter a new task">
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+          Add
+        </button>
+      </div>
+    </form>
+
+    <!-- Lista de tareas -->
+    <div id="task-list" class="space-y-2">
+      <template v-for="task in tasks">
+        <div class="flex items-center justify-between p-3 bg-gray-50 rounded" hx-target="this" hx-swap="outerHTML">
+          <span :class="{ 'line-through': task.completed }">
+            {{ task.name }}
+          </span>
+          <div class="flex gap-2">
+            <button hx-put="/api/tasks/toggle/${task.id}"
+              class="text-sm px-2 py-1 rounded bg-green-100 text-green-700 hover:bg-green-200">
+              ✓
+            </button>
+            <button hx-delete="/api/tasks/${task.id}"
+              class="text-sm px-2 py-1 rounded bg-red-100 text-red-700 hover:bg-red-200">
+              ×
+            </button>
+          </div>
+        </div>
+      </template>
+    </div>
+  </div>
+
+  <script>
+    window.addEventListener('load', () => {
+      PetiteVue.createApp().mount()
+    })
+  </script>
+</body>
+
+</html>
